@@ -1,22 +1,26 @@
 
+require 'date'
+
 class Cheer
 
   AN_LETTERS = "AEFHILMNORSX"
 
   def self.for_birthday(birthday)
-    today = Date.today
-    next_birthday = BirthdayParser.parse(birthday)
+    birthday_string = ""
+    today = Date.today.yday
+    next_birthday = Date.parse(birthday).yday
     difference = next_birthday - today
-    case difference
-    when 0
-      "Happy birthday!"
-    when 1
-      #Use the singular
-      "Awesome! Your birthday is in 1 day! Happy birthday in advance!"
+    if difference > 1
+      birthday_string << "Awesome! Your birthday is in #{difference} days! Happy Birthday in advance!"
+    elsif difference == 1
+      birthday_string << "Awesome! Your birthday is in #{difference} day! Happy Birthday in advance!"
+    elsif difference == 0
+      birthday_string << "Awesome! Your birthday is in today! Happy Birthday!"
     else
-      #Use the plural
-      "Awesome! Your birthday is in 1 days! Happy birthday in advance!"
+      new_birthday = 365 - difference
+      birthday_string << "Awesome! Your birthday is in #{difference} days! Happy Birthday in advance!"
     end
+    birthday_string
   end
 
   def self.for_person(name)
